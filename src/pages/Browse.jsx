@@ -61,103 +61,96 @@ const Browse = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-80px)] md:h-[calc(100vh-100px)] min-h-[600px] flex flex-col bg-neutral-50 font-display relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-neutral-50 font-display relative overflow-hidden">
       <SEOHead {...seoData.browse} />
-
+      
       {/* Background Decorators */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-100 rounded-full mix-blend-multiply filter blur-[80px] opacity-60 translate-x-1/3 -translate-y-1/2 pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-50 rounded-full mix-blend-multiply filter blur-[80px] opacity-60 -translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100 rounded-full mix-blend-multiply filter blur-[100px] opacity-60 translate-x-1/3 -translate-y-1/2 pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-50 rounded-full mix-blend-multiply filter blur-[100px] opacity-60 -translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
 
-      <main className="flex-grow flex items-center justify-center p-4 md:p-6 relative z-10 w-full overflow-hidden">
-        <div className="w-full max-w-2xl mx-auto flex flex-col bg-white/70 backdrop-blur-xl p-6 md:p-8 rounded-[2rem] shadow-xl border border-white/50 max-h-full overflow-y-auto scrollbar-hide">
-
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-neutral-900 text-white shadow-lg mb-4 transform -rotate-3 hover:rotate-0 transition-transform duration-300">
-              <IoLocationOutline size={26} />
-            </div>
-            <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-neutral-900 mb-2">
-              Select Your Campus
+      <main className="flex-grow flex items-start justify-center pt-[8vh] md:pt-[12vh] pb-10 px-4 sm:px-6 md:px-8 relative z-10 w-full overflow-y-auto">
+        <div className="w-full max-w-4xl mx-auto flex flex-col">
+          
+          <div className="text-center mb-6 md:mb-8 w-full">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-neutral-900 mb-3 drop-shadow-sm">
+              Where do you study?
             </h2>
-            <p className="text-xs md:text-sm text-neutral-500 font-medium max-w-sm mx-auto">
-              Find exclusive student deals on textbooks, gadgets, and projects right at your college.
+            <p className="text-xs sm:text-sm text-neutral-500 font-medium max-w-xl mx-auto px-2">
+              Select your campus to unlock exclusive student deals on textbooks, electronics, and projects available right at your college.
             </p>
           </div>
 
           {/* Search Input Container */}
-          <div className="w-full relative z-20">
-            <div className="relative group">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-blue-500 transition-colors">
-                <IoSearch size={20} />
+          <div className="w-full max-w-2xl mx-auto relative z-30 mb-10 md:mb-12">
+            <div className="relative group shadow-[0_5px_20px_rgba(0,0,0,0.04)] rounded-full bg-white transition-all hover:shadow-[0_10px_30px_rgba(37,99,235,0.08)]">
+              <span className="absolute left-5 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-blue-500 transition-colors">
+                <IoSearch size={18} />
               </span>
               <input
                 type="search"
                 placeholder="Search for your campus..."
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="w-full bg-white border-2 border-neutral-100 rounded-2xl py-3 pl-12 pr-5 text-sm md:text-base shadow-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-medium placeholder:text-neutral-400"
+                className="w-full bg-transparent border border-neutral-200 rounded-full py-3 md:py-4 pl-12 pr-6 text-sm md:text-base outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-medium placeholder:text-neutral-400"
               />
             </div>
 
             {/* Suggestions Dropdown */}
             {suggestions.length > 0 && searchQuery && (
-              <ul className="absolute w-full bg-white border border-neutral-100 rounded-2xl mt-2 z-50 max-h-48 overflow-y-auto shadow-[0_20px_40px_rgba(0,0,0,0.08)] py-2">
+              <ul className="absolute w-full bg-white border border-neutral-100 rounded-2xl mt-3 z-50 max-h-60 overflow-y-auto shadow-[0_20px_40px_rgba(0,0,0,0.12)] py-2">
                 {suggestions.map((campus) => (
                   <li
                     key={campus._id}
-                    className="px-4 py-2 hover:bg-neutral-50 cursor-pointer flex items-center gap-3 transition-colors"
+                    className="px-4 py-3 hover:bg-neutral-50 cursor-pointer flex items-center gap-4 transition-colors"
                     onClick={() => handleSelectCampus(campus)}
                   >
                     <img
                       src={campus.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(campus.name)}&background=random`}
                       referrerPolicy="no-referrer"
-                      className="w-8 h-8 rounded-full object-cover shadow-sm bg-neutral-100"
+                      className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover shadow-sm bg-neutral-100"
                       alt={campus.name}
                     />
-                    <span className="font-bold text-sm text-neutral-800">{campus.name}</span>
+                    <span className="font-bold text-sm md:text-base text-neutral-800">{campus.name}</span>
                   </li>
                 ))}
               </ul>
             )}
           </div>
 
-          <div className="w-full mt-6 md:mt-8 relative z-10 shrink-0">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="h-px bg-neutral-200 flex-1"></div>
-              <h3 className="text-[10px] md:text-xs font-bold text-neutral-400 uppercase tracking-widest">
-                Popular Communities
-              </h3>
-              <div className="h-px bg-neutral-200 flex-1"></div>
-            </div>
+          <div className="w-full relative z-10 text-center mt-2">
+            <h3 className="text-[10px] md:text-xs font-extrabold text-neutral-400 uppercase tracking-widest mb-6">
+              Popular Communities
+            </h3>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
               {loading
                 ? Array.from({ length: 8 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-12 rounded-2xl bg-neutral-100/80 animate-pulse border border-neutral-100"
-                  ></div>
-                ))
+                    <div
+                      key={i}
+                      className="h-20 md:h-24 rounded-2xl bg-neutral-100/80 animate-pulse border border-neutral-100"
+                    ></div>
+                  ))
                 : popularCampuses.map((campus) => (
-                  <button
-                    key={campus._id}
-                    className="group flex flex-col items-center justify-center gap-1.5 py-2 px-1 border-2 border-neutral-100 rounded-2xl bg-white hover:border-neutral-900 hover:shadow-md transition-all duration-300 transform active:scale-95"
-                    onClick={() => handleSelectCampus(campus)}
-                  >
-                    <img
-                      src={campus.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(campus.name)}&background=random`}
-                      referrerPolicy="no-referrer"
-                      className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover shadow-sm group-hover:scale-110 transition-transform duration-300"
-                      alt={campus.name}
-                    />
-                    <span className="font-bold text-[9px] md:text-[10px] text-center text-neutral-600 group-hover:text-neutral-900 line-clamp-1 w-full px-1">
-                      {campus.name}
-                    </span>
-                  </button>
-                ))}
+                    <button
+                      key={campus._id}
+                      className="group flex flex-col items-center justify-center gap-2 p-3 md:p-4 border border-neutral-200 rounded-2xl bg-white hover:border-black hover:ring-1 hover:ring-black hover:shadow-lg hover:-translate-y-1 transition-all duration-300 transform"
+                      onClick={() => handleSelectCampus(campus)}
+                    >
+                      <img
+                        src={campus.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(campus.name)}&background=random`}
+                        referrerPolicy="no-referrer"
+                        className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover shadow-sm group-hover:scale-110 transition-transform duration-300"
+                        alt={campus.name}
+                      />
+                      <span className="font-bold text-[10px] md:text-xs text-center text-neutral-600 group-hover:text-black line-clamp-2 w-full px-1">
+                        {campus.name}
+                      </span>
+                    </button>
+                  ))}
             </div>
-
+            
             {!loading && popularCampuses.length === 0 && (
-              <p className="text-center text-sm font-medium text-neutral-500 mt-4">
+              <p className="text-center text-xs md:text-sm font-medium text-neutral-500 mt-8">
                 No campuses available globally at the moment.
               </p>
             )}

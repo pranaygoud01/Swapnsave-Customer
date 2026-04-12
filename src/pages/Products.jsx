@@ -89,7 +89,7 @@ const Products = () => {
         <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-xl border-b border-neutral-200/60 shadow-sm px-4 py-3 md:px-6 lg:px-20">
           <div className="mx-auto w-full max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-3 md:gap-6">
             <div className="flex w-full sm:w-auto flex-col">
-              <span className="text-[10px] md:text-xs font-bold text-blue-600 uppercase tracking-widest flex items-center gap-1">
+              <span className="text-[10px] md:text-xs font-bold text-blue-600 uppercase tracking-widest flex mt-2 mb-2 items-center gap-2">
                 <Link to="/browse" className="bg-blue-50 text-blue-600 p-1 rounded-md hover:bg-blue-100 transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
                 </Link>
@@ -122,8 +122,8 @@ const Products = () => {
                 key={cat.name}
                 onClick={() => setSelectedCategory(cat.name)}
                 className={`flex items-center gap-2 flex-shrink-0 px-4 py-2 rounded-full transition-all duration-300 border shadow-sm ${selectedCategory === cat.name
-                    ? "bg-neutral-900 border-neutral-900 text-white shadow-md"
-                    : "bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300 hover:bg-neutral-50"
+                  ? "bg-neutral-900 border-neutral-900 text-white shadow-md"
+                  : "bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300 hover:bg-neutral-50"
                   }`}
               >
                 <img src={cat.image} className="w-5 h-5 object-contain" alt={cat.name} />
