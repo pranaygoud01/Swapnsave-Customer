@@ -1,7 +1,8 @@
 // pages/SingleProduct.jsx
 import React, { useEffect, useState } from "react";
-import { useParams } from "@tanstack/react-router";
+import { useParams, Link } from "@tanstack/react-router";
 import axios from "axios";
+import { FaWhatsapp, FaPhone, FaArrowLeft } from "react-icons/fa6";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -13,46 +14,41 @@ const SingleProduct = () => {
   useEffect(() => {
     axios
       .get(`${baseUrl}/api/products/${id}`)
-      .then((res) => setProduct(res.data))
+      .then((res) => {
+        let data = res.data;
+        if (data && data.item) data = data.item;
+        else if (data && data.data) data = data.data;
+        
+        setProduct(data);
+      })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, [id]);
 
   if (loading) {
     return (
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 animate-pulse">
-          {/* Image skeleton */}
+      <div className="bg-neutral-50 min-h-screen pt-4 pb-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-8 animate-pulse mt-8">
           <div className="lg:col-span-3">
-            <div className="w-full h-[600px] max-lg:h-[400px] rounded-xl bg-gray-300 :bg-gray-700"></div>
+            <div className="w-full h-[400px] md:h-[600px] rounded-3xl bg-neutral-200 shadow-sm border border-neutral-100"></div>
           </div>
-
-          {/* Details skeleton */}
-          <div className="lg:col-span-2 flex flex-col space-y-6">
+          <div className="lg:col-span-2 flex flex-col space-y-6 pt-4">
             <div>
-              <div className="h-6 w-2/3 bg-gray-300 :bg-gray-700 rounded mb-4"></div>
-              <div className="h-8 w-1/3 bg-gray-300 :bg-gray-700 rounded"></div>
+              <div className="h-4 w-24 bg-neutral-200 rounded-full mb-6"></div>
+              <div className="h-10 w-3/4 bg-neutral-200 rounded-lg mb-4"></div>
+              <div className="h-10 w-1/3 bg-neutral-200 rounded-lg"></div>
             </div>
-
-            <div className="space-y-2">
-              <div className="h-4 w-full bg-gray-300 :bg-gray-700 rounded"></div>
-              <div className="h-4 w-5/6 bg-gray-300 :bg-gray-700 rounded"></div>
-              <div className="h-4 w-2/3 bg-gray-300 :bg-gray-700 rounded"></div>
+            <div className="space-y-3 mt-8">
+              <div className="h-4 w-full bg-neutral-200 rounded"></div>
+              <div className="h-4 w-5/6 bg-neutral-200 rounded"></div>
+              <div className="h-4 w-2/3 bg-neutral-200 rounded"></div>
             </div>
-
-            {/* Seller Info skeleton */}
-            <div className="rounded-lg bg-black/5 :bg-white/5 p-4 flex items-center gap-4">
-              <div className="h-14 w-14 rounded-full bg-gray-300 :bg-gray-700"></div>
+            <div className="rounded-2xl bg-white border border-neutral-100 p-5 flex items-center gap-4 mt-8">
+              <div className="h-14 w-14 rounded-full bg-neutral-200"></div>
               <div className="flex-1 space-y-2">
-                <div className="h-4 w-1/2 bg-gray-300 :bg-gray-700 rounded"></div>
-                <div className="h-3 w-2/3 bg-gray-300 :bg-gray-700 rounded"></div>
+                <div className="h-4 w-1/2 bg-neutral-200 rounded"></div>
+                <div className="h-3 w-1/3 bg-neutral-200 rounded"></div>
               </div>
-            </div>
-
-            {/* Buttons skeleton */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="h-12 rounded-lg bg-gray-300 :bg-gray-700"></div>
-              <div className="h-12 rounded-lg bg-gray-300 :bg-gray-700"></div>
             </div>
           </div>
         </div>
@@ -61,96 +57,170 @@ const SingleProduct = () => {
   }
 
   if (!product) {
-    return <div className="text-center font-semibold text-neutral-500 mt-10">Product not found</div>;
+    return (
+      <div className="bg-neutral-50 min-h-screen flex flex-col items-center justify-center p-6">
+        <div className="bg-white p-8 rounded-3xl shadow-sm text-center max-w-md w-full border border-neutral-100">
+          <h2 className="text-2xl font-extrabold text-neutral-900 mb-2">Product Not Found</h2>
+          <p className="text-neutral-500 mb-6">This item may have been sold or removed by the seller.</p>
+          <Link to="/browse" className="inline-flex justify-center items-center w-full bg-neutral-900 text-white font-semibold py-3 px-6 rounded-xl hover:bg-black transition-colors">
+            Back to Browse
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="font-display bg-background-light :bg-background- text-[#0D141B] :text-background-light min-h-screen flex flex-col">
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-8 flex-1">
+    <div className="bg-neutral-50 min-h-screen flex flex-col relative overflow-hidden">
+      {/* Decorative gradient background */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 translate-x-1/3 -translate-y-1/2 pointer-events-none"></div>
+
+      <main className="container mx-auto px-4 sm:px-6 lg:px-20 py-6 md:py-10 flex-1 relative z-10">
         <div className="max-w-7xl mx-auto">
-          {/* Breadcrumb */}
-          <div className="mb-6 text-sm font-medium text-black/60 :text-white/60">
-            <a href="#" className="hover:text-primary">
-              Marketplace
-            </a>
-            <span className="mx-1">/</span>
-            <span className="text-black/90 :text-white/90">Product</span>
+          
+          {/* Breadcrumb / Back Button */}
+          <div className="mb-6 md:mb-8 flex items-center">
+            <Link to="/browse" className="group flex items-center gap-2 text-sm font-semibold text-neutral-500 hover:text-neutral-900 transition-colors bg-white px-4 py-2 rounded-full shadow-sm border border-neutral-200 hover:border-neutral-300">
+              <FaArrowLeft className="group-hover:-translate-x-1 transition-transform" />
+              Back to Catalog
+            </Link>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+            
             {/* Hero Image */}
-            <div className="lg:col-span-3 relative">
-             <h1 className="absolute top-5 left-5 text-xs font-semibold text-white bg-red-800 px-2 py-1 rounded-md">{product.campus?.name}</h1>
+            <div className="lg:col-span-3 h-fit relative rounded-3xl overflow-hidden shadow-xl shadow-neutral-200/50 border border-neutral-200/60 group bg-white">
+              
+              {/* Campus Badge */}
+              {product.campus?.name && (
+                <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg">
+                  <p className="font-bold text-xs text-neutral-800 uppercase tracking-wide flex items-center gap-1.5">
+                    🎓 {product.campus.name}
+                  </p>
+                </div>
+              )}
+              
               <div
-                className="w-full  rounded-xl bg-cover bg-center  max-lg:h-[400px] h-[600px]"
+                className="w-full h-[400px] sm:h-[500px] lg:h-[600px] bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                 style={{
                   backgroundImage: `url(${product.image})`,
                 }}
               ></div>
+              
+              {/* Subtle gradient overlay at bottom */}
+              <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/10 to-transparent pointer-events-none"></div>
             </div>
 
-            {/* Details */}
-            <div className="lg:col-span-2 flex flex-col max-lg:space-y-3 space-y-6">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+            {/* Details Section */}
+            <div className="lg:col-span-2 flex flex-col space-y-6 md:space-y-8 pb-10">
+              
+              <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-neutral-100">
+                {product.category && (
+                  <span className="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-wider rounded-md mb-4 border border-blue-100">
+                    {product.category}
+                  </span>
+                )}
+                
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-neutral-900 leading-tight">
                   {product.name}
                 </h1>
-                <p className="mt-4 max-lg:mt-2 text-2xl sm:text-3xl font-bold text-primary">
-                  ₹{product.price}
-                </p>
-              </div>
-
-              <div className="prose prose-sm sm:prose-base text-black/80 :text-white/80">
-                <p>{product.description}</p>
-              </div>
-
-              {/* Seller Info */}
-              <div className="rounded-lg bg-black/5 :bg-white/5 p-4">
-                <h3 className="text-sm font-semibold uppercase tracking-wider mb-3">
-                  Seller Information
-                </h3>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  <div
-                    className="h-14 w-14 rounded-full bg-cover bg-center flex-shrink-0"
-                    style={{
-                      backgroundImage: `url(${
-                        product.seller?.avatar ||
-                        "https://avatar.iran.liara.run/public/48"
-                      })`,
-                    }}
-                  ></div>
-                  <div>
-                    <p className="font-semibold">
-                      {product.seller?.name || "Unknown Seller"}
-                    </p>
-                    <p className="text-sm text-black/60 :text-white/60">
-                      {product.seller?.email || ""}
-                    </p>
-                  </div>
+                
+                <div className="mt-4 flex items-end gap-3">
+                  <p className="text-4xl sm:text-5xl font-extrabold text-blue-600">
+                    ₹{product.price}
+                  </p>
                 </div>
               </div>
 
-              {/* Buttons */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Description */}
+              <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-neutral-100">
+                <h3 className="text-lg font-bold text-neutral-900 mb-3">About this item</h3>
+                <p className="text-base text-neutral-600 leading-relaxed font-medium">
+                  {product.description}
+                </p>
+              </div>
+
+              {/* Seller Info */}
+              <div className="bg-white rounded-3xl p-5 md:p-6 shadow-sm border border-neutral-100 flex items-center gap-5 relative overflow-hidden">
+                <div className="absolute right-0 top-0 w-32 h-32 bg-neutral-50 rounded-full translate-x-1/2 -translate-y-1/2"></div>
+                
+                <div
+                  className="h-16 w-16 rounded-full bg-cover bg-center shadow-inner relative z-10 border border-neutral-200"
+                  style={{
+                    backgroundImage: `url(${
+                      product.seller?.avatar ||
+                      `https://ui-avatars.com/api/?name=${encodeURIComponent(product.seller?.name || "User")}`
+                    })`,
+                  }}
+                ></div>
+                <div className="relative z-10">
+                  <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-1">Listed By</p>
+                  <p className="font-extrabold text-lg text-neutral-900">
+                    {product.seller?.name || "Unknown Seller"}
+                  </p>
+                  {product.seller?.email && (
+                    <p className="text-sm font-medium text-neutral-500">
+                      {product.seller.email}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Action Buttons (Desktop Only) */}
+              <div className="hidden md:grid grid-cols-2 gap-4 mt-2">
+                <a
+                  href={`tel:${product?.contact || ""}`}
+                  className="group relative flex items-center justify-center gap-2 w-full h-14 bg-neutral-900 text-white rounded-xl shadow-lg border-2 border-neutral-900 hover:bg-black hover:scale-[1.02] active:scale-[0.98] transition-all overflow-hidden"
+                >
+                  <FaPhone className="text-sm relative z-10" />
+                  <span className="font-bold relative z-10">Buy Now</span>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </a>
+                
                 <a
                   href={`https://wa.me/${product.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full h-12 flex items-center justify-center rounded-lg bg-neutral-100 text-black font-bold hover:bg-primary/20 :hover:bg-primary/30 transition-colors"
+                  className="group relative flex items-center justify-center gap-2 w-full h-14 bg-[#25D366] text-white rounded-xl shadow-lg border-2 border-[#25D366] hover:bg-[#20b858] hover:border-[#20b858] hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
-                  Chat on Whatsapp
-                </a>
-                <a
-                  href={`tel:${product?.contact || ""}`}
-                  className="w-full h-12 flex items-center justify-center rounded-lg bg-black text-white font-bold hover:opacity-90 transition-opacity"
-                >
-                  Buy Now
+                  <FaWhatsapp className="text-xl" />
+                  <span className="font-bold">WhatsApp</span>
                 </a>
               </div>
+              
+              <p className="hidden md:block text-center text-xs font-semibold text-neutral-400 mt-2">
+                Always meet securely on campus to verify items before paying.
+              </p>
             </div>
           </div>
         </div>
       </main>
+
+      {/* Mobile Fixed Action Bar */}
+      <div className="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-xl border-t border-neutral-200/60 p-4 shadow-[0_-15px_30px_rgba(0,0,0,0.05)] z-50 md:hidden flex items-center justify-between gap-4 safe-area-bottom">
+        <div className="flex flex-col flex-shrink-0">
+          <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">Total Price</span>
+          <span className="text-2xl font-extrabold text-blue-600 leading-none">₹{product.price}</span>
+        </div>
+        
+        <div className="flex gap-2 w-full max-w-[220px]">
+          <a
+            href={`https://wa.me/${product.whatsapp}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-[48px] h-[48px] flex items-center justify-center bg-[#25D366] text-white rounded-[14px] flex-shrink-0 active:scale-95 transition-transform shadow-md"
+          >
+            <FaWhatsapp size={22} />
+          </a>
+          <a
+            href={`tel:${product?.contact || ""}`}
+            className="flex-1 h-[48px] flex items-center justify-center bg-neutral-900 text-white rounded-[14px] font-bold active:scale-95 transition-transform shadow-md gap-2"
+          >
+            <FaPhone size={12} />
+            Buy Now
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

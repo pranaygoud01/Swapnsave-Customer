@@ -32,7 +32,19 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get(`${baseUrl}/api/products/campus/${campusId}`);
-        setProducts(res.data.reverse()); // assuming API returns an array
+        
+        // Handle common API wrappings safely
+        let data = res.data;
+        if (data && data.items) data = data.items;
+        else if (data && data.products) data = data.products;
+        else if (data && data.data) data = data.data;
+
+        if (Array.isArray(data)) {
+          setProducts([...data].reverse());
+        } else {
+          console.error("fetchProducts returned non-array:", res.data);
+          setProducts([]);
+        }
       } catch (err) {
         console.error(err);
       } finally {

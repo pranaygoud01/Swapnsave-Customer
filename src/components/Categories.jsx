@@ -33,43 +33,54 @@ const Categories = () => {
   ];
 
   return (
-    <section className=":bg-background- w-full bg-white py-12 md:py-16">
-      <div className="container mx-auto w-full px-5 sm:px-6 lg:px-20">
-        <div className="flex items-end justify-between mb-6 md:mb-8">
-          <div>
-            <p className="text-[10px] tracking-widest font-semibold text-neutral-400 uppercase">Discover</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">Browse by Category</h2>
-          </div>
-          
+    <section className="relative w-full bg-neutral-900 text-white py-20 lg:py-24 overflow-hidden">
+      {/* Decorative background glows */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full filter blur-[100px]"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[100px]"></div>
+      
+      <div className="container mx-auto w-full px-6 md:px-20 relative z-10">
+        <div className="flex flex-col items-center text-center justify-center mb-10 md:mb-12">
+          <p className="text-xs md:text-sm tracking-[0.2em] font-bold text-blue-400 uppercase mb-2 md:mb-3">Discover</p>
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-neutral-400">
+            Browse by Category
+          </h2>
+          <p className="text-sm md:text-base text-neutral-400 mt-3 md:mt-4 max-w-lg px-4">
+            Everything you need for your campus life, organized perfectly for you.
+          </p>
         </div>
 
-        <div className="relative">
-          <div className="pointer-events-none absolute inset-0 rounded-3xl bg-white" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 relative">
-            {items.map((card) => (
-              <Link
-                key={card.title}
-                to={card.to}
-                className="group  bg-white border border-neutral-200 rounded-2xl  flex flex-col hover:shadow transition-shadow"
-              >
-                <div className="h-40 w-full overflow-hidden rounded-t-xl bg-neutral-50 flex items-center justify-center ">
-                  <img src={card.img} alt={card.title} className="h-full py-5 rounded-t-xl object-contain group-hover:scale-[1.02] transition-transform" />
-                </div>
-                <div className="px-5 pb-5">
-                <div className="mt-4 flex items-center gap-2">
-                  
-                  <h3 className="text-lg font-semibold text-gray-900">{card.title}</h3>
-                </div>
-                <p className="mt-1 text-sm text-neutral-600 flex-1">{card.description}</p>
-                <div className="mt-4">
-                  <span className="inline-flex items-center max-lg:text-xs justify-center px-4 py-2 text-sm font-semibold text-white bg-black rounded-lg group-hover:bg-neutral-900">
-                    {card.cta}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {items.map((card) => (
+            <Link
+              key={card.title}
+              to={card.to}
+              className="group relative flex flex-col h-full bg-neutral-800/50 backdrop-blur-sm border border-neutral-700/50 rounded-2xl md:rounded-3xl overflow-hidden hover:border-neutral-500 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-900/20"
+            >
+              {/* Subtle hover gradient inside card */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+              <div className="h-40 md:h-56 w-full flex items-center justify-center relative p-6 md:p-8">
+                {/* Glow behind image */}
+                <div className="absolute inset-x-8 inset-y-8 bg-gradient-to-t from-black/0 to-white/5 rounded-full blur-xl md:blur-2xl group-hover:bg-white/10 transition-colors"></div>
+                <img 
+                  src={card.img} 
+                  alt={card.title} 
+                  className="h-full w-auto object-contain relative z-10 group-hover:scale-110 group-hover:rotate-2 transition-transform duration-500 drop-shadow-2xl" 
+                />
+              </div>
+              
+              <div className="p-6 md:p-8 flex flex-col flex-1 relative z-10 bg-gradient-to-t from-neutral-900 to-transparent">
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-2">{card.title}</h3>
+                <p className="text-xs md:text-sm text-neutral-400 mb-6 md:mb-8 flex-1 leading-relaxed">{card.description}</p>
+                <div className="mt-auto">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 text-xs md:text-sm font-bold text-neutral-900 bg-white rounded-full group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
+                    {card.cta} 
+                    <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
                   </span>
                 </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

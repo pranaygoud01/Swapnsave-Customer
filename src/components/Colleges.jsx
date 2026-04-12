@@ -35,49 +35,57 @@ const Colleges = () => {
   };
 
   return (
-    <section className="w-full flex items-center justify-center px-6 md:px-20 py-16 max-lg:py-10 bg-neutral-50">
-      <div className="flex flex-col gap-12 items-center max-w-7xl w-full">
+    <section className="w-full relative px-6 md:px-20 py-24 max-lg:py-16 bg-white overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 via-white to-white pointer-events-none"></div>
+
+      <div className="flex flex-col gap-12 items-center max-w-7xl mx-auto w-full relative z-10">
         {/* Heading */}
-        <div>
-          <h1 className="font-bold text-2xl md:text-4xl text-gray-900 text-center">
-            Featured Colleges
+        <div className="text-center max-w-2xl px-4">
+          <p className="text-xs md:text-sm font-bold text-blue-600 mb-2 md:mb-3 uppercase tracking-widest">Communities</p>
+          <h1 className="font-extrabold text-2xl md:text-3xl lg:text-5xl text-neutral-900 mb-3 md:mb-4 bg-clip-text text-transparent bg-gradient-to-r from-neutral-900 to-neutral-600">
+            Featured Campuses
           </h1>
-          <p className="text-neutral-500 max-lg:text-xs text-sm text-center max-w-2xl">
-            Explore popular colleges where students are actively buying and
-            selling.
+          <p className="text-neutral-500 text-sm md:text-lg">
+            Join thousands of students from top colleges actively buying, selling, and collaborating.
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="w-full overflow-x-auto scrollbar-hide">
-          <div className="flex gap-6 md:grid md:grid-cols-5 md:gap-6 min-w-max md:min-w-0">
+        {/* Cards container */}
+        <div className="w-full relative px-2 md:px-0">
+          <div className="flex gap-4 md:gap-6 overflow-x-auto scrollbar-hide py-4 px-2 snap-x snap-mandatory lg:grid lg:grid-cols-5 lg:gap-6 lg:overflow-visible">
             {loading
               ? Array.from({ length: 5 }).map((_, i) => (
                   <div
                     key={i}
-                    className="flex flex-col items-center gap-4 bg-white p-6 rounded-xl shadow-sm border border-gray-100 min-w-[200px]"
+                    className="flex flex-col items-center gap-3 md:gap-4 bg-white p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-sm border border-neutral-100 min-w-[180px] md:min-w-[220px] snap-center animate-pulse"
                   >
-                    <div className="w-20 h-20 rounded-full bg-neutral-200 animate-pulse"></div>
-                    <div className="h-4 w-24 bg-neutral-200 rounded animate-pulse"></div>
+                    <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-neutral-200"></div>
+                    <div className="h-3 md:h-4 w-20 md:w-24 bg-neutral-200 rounded mt-2"></div>
                   </div>
                 ))
               : colleges.map((college) => (
                   <button
                     key={college._id}
                     onClick={() => handleSelectCollege(college)}
-                    className="flex flex-col items-center cursor-pointer gap-4 bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300 min-w-[200px]"
+                    className="group flex flex-col items-center justify-center cursor-pointer gap-5 bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-neutral-100 hover:border-blue-100 hover:shadow-[0_8px_30px_rgb(59,130,246,0.12)] hover:-translate-y-2 transition-all duration-300 min-w-[220px] snap-center text-center relative overflow-hidden"
                   >
-                    <span className="flex items-center justify-center w-20 h-20 rounded-full bg-gray-100 overflow-hidden">
-                      <img
-                        src={
-                          college.avatar ||
-                          "https://img.freepik.com/premium-vector/college-logo-design-concept-vector-art-illustration_761413-39595.jpg"
-                        }
-                        alt={college.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </span>
-                    <h2 className="font-bold text-lg text-gray-800 text-center">
+                    {/* Hover Effect Background */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                    <div className="relative w-24 h-24 rounded-full bg-white shadow-md p-2 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 z-10">
+                      <div className="w-full h-full rounded-full overflow-hidden bg-neutral-50">
+                        <img
+                          src={
+                            college.avatar ||
+                            "https://img.freepik.com/premium-vector/college-logo-design-concept-vector-art-illustration_761413-39595.jpg"
+                          }
+                          alt={college.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                    <h2 className="font-bold text-lg text-neutral-800 group-hover:text-blue-600 transition-colors z-10">
                       {college.name}
                     </h2>
                   </button>
@@ -88,9 +96,10 @@ const Colleges = () => {
         {/* Request College Button */}
         <button
           onClick={handleRequestCollege}
-          className="mt-6 flex items-center gap-2 px-6 py-3 text-xs font-bold cursor-pointer bg-black text-white rounded-lg  transition-colors duration-300"
+          className="mt-6 flex items-center gap-3 px-8 py-4 text-sm font-bold cursor-pointer text-neutral-700 bg-white border-2 border-neutral-200 rounded-full hover:border-neutral-900 hover:bg-neutral-900 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl"
         >
-          <BsBuildingAdd/>Request to Add Your College
+          <BsBuildingAdd size={18} />
+          <span>Don't see your college? Request to add it</span>
         </button>
       </div>
     </section>

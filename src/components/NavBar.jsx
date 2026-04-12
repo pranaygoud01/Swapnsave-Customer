@@ -88,33 +88,33 @@ const NavBar = () => {
   });
 
   return (
-    <div className="w-full sticky top-0 z-50 bg-white ">
+    <div className="w-full sticky top-0 z-50 bg-white backdrop-blur-xl border-b border-neutral-200/60 shadow-sm transition-all duration-300">
       {/* Main Navbar */}
-      <div className="px-6 md:px-20 py-4 flex border-b border-b-neutral-200 justify-between items-center">
+      <div className="px-6 md:px-20 py-4 flex justify-between items-center">
         {/* Left Logo + Menu */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-6">
           <Link
             to="/"
-            className="font-bold text-black max-lg:text-lg text-xl flex items-center gap-1"
+            className="font-bold text-black max-lg:text-lg text-xl flex items-center gap-1 hover:opacity-80 transition-opacity"
           >
             <img src={logo} className="h-[40px] max-lg:h-[35px] w-auto" alt="SwapnSave Logo - Campus Marketplace" />
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex">
+          <div className="hidden md:flex gap-1 border-l border-neutral-200 pl-6 ml-2">
             {menu.map((item) => {
               const path =
                 item === "Home"
                   ? "/"
                   : item === "Sell Project"
-                  ? "/sell-project"
-                  : `/${item.toLowerCase()}`;
+                    ? "/sell-project"
+                    : `/${item.toLowerCase()}`;
 
               return (
                 <Link
                   key={item}
                   to={path}
-                  className="px-2 font-semibold cursor-pointer text-neutral-500 text-xs"
+                  className="px-3 py-1.5 font-bold rounded-full text-neutral-500 text-sm hover:text-neutral-900 hover:bg-neutral-100/80 transition-colors"
                 >
                   {item}
                 </Link>
@@ -124,15 +124,15 @@ const NavBar = () => {
         </div>
 
         {/* Right Section */}
-        <div className="hidden md:flex items-center gap-5 relative">
-          <div className="w-[300px] border border-neutral-200 flex items-center px-2 py-1 rounded-xl">
-            <span>
-              <CiSearch />
+        <div className="hidden md:flex items-center gap-6 relative">
+          <div className="w-[300px] bg-neutral-100/70 border border-neutral-200 flex items-center px-4 py-2.5 rounded-full hover:bg-neutral-100 focus-within:bg-white focus-within:border-blue-400 focus-within:ring-4 focus-within:ring-blue-100/50 transition-all cursor-text">
+            <span className="text-neutral-400">
+              <CiSearch size={20} />
             </span>
             <input
               type="text"
-              className="px-2 py-1 outline-0 text-sm w-full"
-              placeholder="Search..."
+              className="px-2 bg-transparent outline-none text-sm w-full font-medium text-neutral-800 placeholder:text-neutral-400"
+              placeholder="Search products, projects, notes..."
             />
           </div>
 
@@ -140,13 +140,13 @@ const NavBar = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => loginWithGoogle()}
-                className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-neutral-900"
+                className="group flex items-center gap-2 bg-neutral-900 border border-neutral-800 text-white px-5 py-2.5 rounded-full text-sm font-bold hover:bg-black hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
               >
                 {/* Google logo */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 48 48"
-                  className="w-4 h-4"
+                  className="w-4 h-4 bg-white rounded-full p-0.5"
                 >
                   <path
                     fill="#FFC107"
@@ -176,23 +176,23 @@ const NavBar = () => {
           ) : (
             <div className="relative">
               <button
-                className="flex items-center gap-2"
+                className="flex items-center gap-3 bg-neutral-50 border border-neutral-200 px-3 py-1.5 rounded-full hover:bg-neutral-100 hover:shadow-sm transition-all"
                 onClick={() => setDropdownOpen((prev) => !prev)}
               >
                 <span className="font-semibold text-xs text-neutral-700">
                   Hey, {userName}
                 </span>
                 <span className="flex items-center cursor-pointer gap-1">
-                   <img
-                     src={
-                       userAvatar ||
-                       "https://ui-avatars.com/api/?name=" +
-                         encodeURIComponent(userName)
-                     }
-                     referrerPolicy="no-referrer"
-                     className="w-8 h-8 rounded-full"
-                     alt={`${userName} profile picture`}
-                   />
+                  <img
+                    src={
+                      userAvatar ||
+                      "https://ui-avatars.com/api/?name=" +
+                      encodeURIComponent(userName)
+                    }
+                    referrerPolicy="no-referrer"
+                    className="w-8 h-8 rounded-full"
+                    alt={`${userName} profile picture`}
+                  />
                   <IoIosArrowDown className="text-xs" />
                 </span>
               </button>
@@ -231,16 +231,16 @@ const NavBar = () => {
         <div className="md:hidden flex items-center gap-2">
           {isAuthenticated ? (
             <div>
-               <img
-                 src={
-                   userAvatar ||
-                   "https://ui-avatars.com/api/?name=" +
-                     encodeURIComponent(userName)
-                 }
-                 referrerPolicy="no-referrer"
-                 className="w-6 h-6 rounded-full"
-                 alt={`${userName} profile picture`}
-               />
+              <img
+                src={
+                  userAvatar ||
+                  "https://ui-avatars.com/api/?name=" +
+                  encodeURIComponent(userName)
+                }
+                referrerPolicy="no-referrer"
+                className="w-6 h-6 rounded-full"
+                alt={`${userName} profile picture`}
+              />
             </div>
           ) : (
             <button
@@ -286,16 +286,16 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Bar */}
-      <div className="w-full scrollbar-hide overflow-x-auto border-b border-neutral-200 bg-white md:hidden">
-        <div className="flex gap-3 px-6 text-xs font-semibold text-neutral-500 whitespace-nowrap">
+      {/* Mobile Menu Bar (Scrollable Links) */}
+      <div className="w-full scrollbar-hide overflow-x-auto border-b border-neutral-100 bg-white/50 backdrop-blur-md md:hidden flex flex-col">
+        <div className="flex gap-3 px-6 pt-2 text-xs font-semibold text-neutral-500 whitespace-nowrap">
           {menu.map((item) => {
             const path =
               item === "Home"
                 ? "/"
                 : item === "Sell Project"
-                ? "/sell-project"
-                : `/${item.toLowerCase()}`;
+                  ? "/sell-project"
+                  : `/${item.toLowerCase()}`;
 
             const isActive = currentPath === path;
 
@@ -303,37 +303,55 @@ const NavBar = () => {
               <Link
                 key={item}
                 to={path}
-                className={`transition py-2 px-3 ${
-                  isActive
-                    ? "text-black border-b-2 border-black"
+                className={`transition pb-3 px-2 relative ${isActive
+                    ? "text-blue-600"
                     : "hover:text-black"
-                }`}
+                  }`}
               >
                 {item}
+                {isActive && (
+                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-600 rounded-t-full"></div>
+                )}
               </Link>
             );
           })}
         </div>
       </div>
 
+      {/* Mobile Search Bar */}
+      <div className="md:hidden w-full px-6 py-3 border-b border-neutral-100 bg-white/50 backdrop-blur-md">
+        <div className="w-full bg-neutral-100/70 border border-neutral-200 flex items-center px-4 py-2.5 rounded-full focus-within:bg-white focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100/50 transition-all">
+          <span className="text-neutral-400">
+            <CiSearch size={20} />
+          </span>
+          <input
+            type="text"
+            className="px-2 bg-transparent outline-none text-sm w-full font-medium text-neutral-800 placeholder:text-neutral-400"
+            placeholder="Search products, projects, notes..."
+          />
+        </div>
+      </div>
+
       {/* Desktop Category Bar */}
-      <div className="hidden md:block w-full scrollbar-hide overflow-x-auto border-b border-neutral-200 bg-white">
+      <div className="hidden md:block w-full scrollbar-hide overflow-x-auto border-b border-neutral-100 bg-white/50 backdrop-blur-md">
         <div className="flex gap-3 px-6 md:px-20 text-xs font-semibold text-neutral-500 whitespace-nowrap">
           {categories.map((cat) => {
             const isActive =
-              currentPath === cat.path ;
+              currentPath === cat.path;
 
             return (
               <Link
                 key={cat.name}
                 to={cat.path}
-                className={`transition py-2 px-3 ${
-                  isActive
-                    ? "text-black border-b-2 border-black"
+                className={`transition py-3 px-3 relative ${isActive
+                    ? "text-blue-600"
                     : "hover:text-black"
-                }`}
+                  }`}
               >
                 {cat.name}
+                {isActive && (
+                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-600 rounded-t-full"></div>
+                )}
               </Link>
             );
           })}
@@ -342,48 +360,56 @@ const NavBar = () => {
 
       {/* Mobile Dropdown */}
       {menuOpen && (
-        <div className="absolute top-15 right-2 rounded-xl w-7/12 h-fit bg-white border-t border-neutral-200 flex flex-col gap-4 p-5 md:hidden shadow-lg">
+        <div className="absolute top-[75px] right-4 rounded-2xl w-64 bg-white/95 backdrop-blur-xl border border-neutral-200/60 shadow-2xl p-5 md:hidden z-50">
           {!isAuthenticated ? (
             <div className="flex flex-col gap-2">
               <button
-                onClick={() => loginWithGoogle()}
-                className="w-full text-center font-semibold text-white bg-black rounded-lg px-4 py-2 text-sm"
+                onClick={() => {
+                  loginWithGoogle();
+                  setMenuOpen(false);
+                }}
+                className="w-full text-center flex items-center justify-center gap-2 font-bold text-white bg-neutral-900 hover:bg-black rounded-full px-5 py-3 text-sm transition-all shadow-md"
               >
                 Continue with Google
               </button>
             </div>
           ) : (
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                 <img
-                   src={
-                     userAvatar ||
-                     "https://ui-avatars.com/api/?name=" +
-                       encodeURIComponent(userName)
-                   }
-                   className="w-8 h-8 rounded-full"
-                   alt={`${userName} profile picture`}
-                 />
-                <span className="font-semibold text-sm text-neutral-700">
-                  Hi, {userName}
-                </span>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-3 pb-3 border-b border-neutral-100">
+                <img
+                  src={
+                    userAvatar ||
+                    "https://ui-avatars.com/api/?name=" +
+                    encodeURIComponent(userName)
+                  }
+                  className="w-10 h-10 rounded-full border border-neutral-200"
+                  alt={`${userName} profile picture`}
+                />
+                <div className="flex flex-col">
+                  <span className="font-bold text-sm text-neutral-900 truncate max-w-[140px]">
+                    {userName}
+                  </span>
+                  <span className="text-[10px] text-green-600 font-bold uppercase tracking-widest">Online</span>
+                </div>
               </div>
-              <Link
-                to="/dashboard"
-                className="font-semibold text-neutral-700 text-sm py-1 rounded hover:bg-neutral-100"
-                onClick={() => setMenuOpen(false)}
-              >
-                Dashboard
-              </Link>
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setMenuOpen(false);
-                }}
-                className="text-left font-semibold text-red-600 text-sm py-1 rounded hover:bg-neutral-100"
-              >
-                Logout
-              </button>
+              <div className="flex flex-col gap-1">
+                <Link
+                  to="/dashboard"
+                  className="font-bold text-neutral-600 text-sm py-2 px-3 rounded-lg hover:bg-neutral-100 hover:text-neutral-900 transition-colors"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setMenuOpen(false);
+                  }}
+                  className="text-left font-bold text-red-500 text-sm py-2 px-3 rounded-lg hover:bg-red-50 hover:text-red-700 transition-colors"
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           )}
         </div>
