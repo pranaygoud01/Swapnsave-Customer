@@ -87,6 +87,14 @@ const NavBar = () => {
     ux_mode: "popup",
   });
 
+  if (
+    currentPath === "/browse/products" ||
+    currentPath === "/browse/products/" ||
+    currentPath.startsWith("/browse/product/")
+  ) {
+    return null;
+  }
+
   return (
     <div className="w-full sticky top-0 z-50 bg-white backdrop-blur-xl border-b border-neutral-200/60 shadow-sm transition-all duration-300">
       {/* Main Navbar */}
@@ -304,8 +312,8 @@ const NavBar = () => {
                 key={item}
                 to={path}
                 className={`transition pb-3 px-2 relative ${isActive
-                    ? "text-blue-600"
-                    : "hover:text-black"
+                  ? "text-blue-600"
+                  : "hover:text-black"
                   }`}
               >
                 {item}
@@ -344,8 +352,8 @@ const NavBar = () => {
                 key={cat.name}
                 to={cat.path}
                 className={`transition py-3 px-3 relative ${isActive
-                    ? "text-blue-600"
-                    : "hover:text-black"
+                  ? "text-blue-600"
+                  : "hover:text-black"
                   }`}
               >
                 {cat.name}
