@@ -82,12 +82,12 @@ const SingleProduct = () => {
   }
 
   return (
-    <div className="bg-neutral-50 min-h-screen flex flex-col relative overflow-hidden">
+    <div className="bg-neutral-50 min-h-screen flex flex-col relative overflow-x-hidden">
       {/* Decorative gradient background */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100 rounded-full mix-blend-multiply filter blur-[100px] opacity-40 translate-x-1/3 -translate-y-1/2 pointer-events-none"></div>
 
       {/* Embedded Product Header */}
-      <header className="sticky top-0 z-50 bg-white backdrop-blur-xl border-b border-neutral-200/60  w-full px-4 sm:px-6 lg:px-20 py-3 flex items-center justify-between transition-all">
+      <header className="fixed top-0 z-50 bg-white backdrop-blur-xl border-b border-neutral-200/60  w-full px-4 sm:px-6 lg:px-20 py-3 flex items-center justify-between transition-all">
         <div className="flex items-center gap-4">
           <Link to="/browse" className="group flex items-center justify-center w-8 h-8 rounded-md p-2 bg-blue-100/80 text-blue-600 hover:bg-blue-200 hover:text-blue-600 transition-all">
             <FaArrowLeft className="group-hover:-translate-x-0.5 transition-transform" />
@@ -110,7 +110,7 @@ const SingleProduct = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 sm:px-6 lg:px-20 py-4 md:py-8 flex-1 relative z-10">
+      <main className="container mx-auto px-4 mt-20 sm:px-6 lg:px-20 py-4 md:py-8 flex-1 relative z-10">
         <div className="max-w-7xl mx-auto">
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10">
