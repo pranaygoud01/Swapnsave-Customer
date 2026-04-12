@@ -5,13 +5,19 @@ import { IoClose, IoMenuOutline } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import logo from "../assets/logo.png";
 import { useGoogleLogin } from "@react-oauth/google";
-
+import axios from "axios";
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  
+  // Search state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const navigate = useNavigate();
   const router = useRouter();
   const currentPath = router.state.location.pathname;
@@ -43,8 +49,33 @@ const NavBar = () => {
     }
   }, []);
 
-  const baseUrl = import.meta.env.VITE_API_URL;
+  const baseUrl = import.meta.env.VITE_API_URL || "https://api.swapnsave.tech";
 
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery.trim().length > 1) {
+        setIsSearching(true);
+        axios
+          .get(`${baseUrl}/api/products?search=${encodeURIComponent(searchQuery.trim())}`)
+          .then((res) => {
+            let data = res.data;
+            if (data && data.data) data = data.data;
+            else if (data && data.items) data = data.items;
+            if (Array.isArray(data)) setSearchResults(data);
+            else setSearchResults([]);
+          })
+          .catch((err) => {
+            console.error("Search error:", err);
+            setSearchResults([]);
+          })
+          .finally(() => setIsSearching(false));
+      } else {
+        setSearchResults([]);
+      }
+    }, 400);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, baseUrl]);
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -133,15 +164,52 @@ const NavBar = () => {
 
         {/* Right Section */}
         <div className="hidden md:flex items-center gap-6 relative">
-          <div className="w-[300px] bg-neutral-100/70 border border-neutral-200 flex items-center px-4 py-2.5 rounded-full hover:bg-neutral-100 focus-within:bg-white focus-within:border-blue-400 focus-within:ring-4 focus-within:ring-blue-100/50 transition-all cursor-text">
-            <span className="text-neutral-400">
-              <CiSearch size={20} />
-            </span>
-            <input
-              type="text"
-              className="px-2 bg-transparent outline-none text-sm w-full font-medium text-neutral-800 placeholder:text-neutral-400"
-              placeholder="Search products, projects, notes..."
-            />
+          <div className="relative w-[300px]">
+            <div className="w-full bg-neutral-100/70 border border-neutral-200 flex items-center px-4 py-2.5 rounded-full hover:bg-neutral-100 focus-within:bg-white focus-within:border-blue-400 focus-within:ring-4 focus-within:ring-blue-100/50 transition-all cursor-text">
+              <span className="text-neutral-400">
+                <CiSearch size={20} />
+              </span>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setShowSearchDropdown(true)}
+                onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}
+                className="px-2 bg-transparent outline-none text-sm w-full font-medium text-neutral-800 placeholder:text-neutral-400"
+                placeholder="Search products, projects, notes..."
+              />
+            </div>
+            
+            {/* Desktop Search Dropdown */}
+            {showSearchDropdown && searchQuery.trim().length > 1 && (
+              <div className="absolute top-full mt-3 w-full bg-white border border-neutral-100 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.08)] max-h-[350px] overflow-y-auto z-50 py-2">
+                {isSearching ? (
+                  <div className="px-4 py-6 text-center text-sm font-medium text-neutral-500 animate-pulse">Searching...</div>
+                ) : searchResults.length > 0 ? (
+                  searchResults.map(product => (
+                    <div 
+                      key={product._id} 
+                      onMouseDown={() => navigate({ to: `/browse/product/${product._id}` })}
+                      className="px-4 py-3 hover:bg-neutral-50 cursor-pointer flex gap-4 items-center border-b border-neutral-50 last:border-0 transition-colors"
+                    >
+                      <img src={product.image} className="w-12 h-12 rounded-xl object-cover shadow-sm bg-neutral-100 flex-shrink-0" alt="" />
+                      <div className="flex flex-col flex-1 overflow-hidden">
+                        <span className="text-sm font-bold text-neutral-800 truncate mb-0.5">{product.name}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-extrabold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md uppercase">₹{product.price}</span>
+                          <span className="text-[10px] uppercase font-bold text-neutral-400 truncate flex-1">{product.category}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="px-4 py-6 text-center flex flex-col justify-center items-center">
+                    <span className="text-2xl mb-2 grayscale opacity-50">🔍</span>
+                    <span className="text-sm font-medium text-neutral-500">No results found for "{searchQuery}"</span>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {!isAuthenticated ? (
@@ -327,16 +395,51 @@ const NavBar = () => {
       </div>
 
       {/* Mobile Search Bar */}
-      <div className="md:hidden w-full px-6 py-3 border-b border-neutral-100 bg-white/50 backdrop-blur-md">
-        <div className="w-full bg-neutral-100/70 border border-neutral-200 flex items-center px-4 py-2.5 rounded-full focus-within:bg-white focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100/50 transition-all">
-          <span className="text-neutral-400">
-            <CiSearch size={20} />
-          </span>
-          <input
-            type="text"
-            className="px-2 bg-transparent outline-none text-sm w-full font-medium text-neutral-800 placeholder:text-neutral-400"
-            placeholder="Search products, projects, notes..."
-          />
+      <div className="md:hidden w-full px-6 py-3 border-b border-neutral-100 bg-white/50 backdrop-blur-md relative z-40">
+        <div className="relative w-full">
+          <div className="w-full bg-neutral-100/70 border border-neutral-200 flex items-center px-4 py-2.5 rounded-full focus-within:bg-white focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100/50 transition-all">
+            <span className="text-neutral-400">
+              <CiSearch size={20} />
+            </span>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setShowSearchDropdown(true)}
+              onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}
+              className="px-2 bg-transparent outline-none text-sm w-full font-medium text-neutral-800 placeholder:text-neutral-400"
+              placeholder="Search products, projects, notes..."
+            />
+          </div>
+          
+          {/* Mobile Search Dropdown */}
+          {showSearchDropdown && searchQuery.trim().length > 1 && (
+            <div className="absolute top-full mt-2 left-0 right-0 w-full bg-white border border-neutral-100 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] max-h-[300px] overflow-y-auto z-50 py-2">
+              {isSearching ? (
+                <div className="px-4 py-4 text-center text-sm font-medium text-neutral-500 animate-pulse">Searching...</div>
+              ) : searchResults.length > 0 ? (
+                searchResults.map(product => (
+                  <div 
+                    key={product._id} 
+                    onMouseDown={() => navigate({ to: `/browse/product/${product._id}` })}
+                    className="px-4 py-3 hover:bg-neutral-50 cursor-pointer flex gap-4 items-center border-b border-neutral-50 last:border-0 transition-colors"
+                  >
+                    <img src={product.image} className="w-10 h-10 rounded-xl object-cover shadow-sm bg-neutral-100 flex-shrink-0" alt="" />
+                    <div className="flex flex-col flex-1 overflow-hidden">
+                      <span className="text-sm font-bold text-neutral-800 truncate mb-0.5">{product.name}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-extrabold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-md uppercase">₹{product.price}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="px-4 py-4 text-center flex flex-col justify-center items-center">
+                  <span className="text-sm font-medium text-neutral-500">No results found</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
