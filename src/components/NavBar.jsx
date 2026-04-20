@@ -12,7 +12,7 @@ const NavBar = () => {
   const [userName, setUserName] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  
+
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -22,15 +22,13 @@ const NavBar = () => {
   const router = useRouter();
   const currentPath = router.state.location.pathname;
 
-  const menu = ["Home", "Browse", "Sell", "Sell Project", "About"];
-
-  const categories = [
-    { name: "Browse", path: "/browse" },
-    { name: "Books", path: "/browse/books" },
+  const menu = ["Home", "Browse", "About", "Contact"];
+  const browseCategories = [
+    { name: "All Products", path: "/browse" },
+    { name: "2nd Hand Books", path: "/browse/books" },
     { name: "Gadgets", path: "/browse/gadgets" },
-    { name: "Lab Coats", path: "/browse/labcoats" },
-    { name: "Instruments", path: "/browse/instruments" },
-    { name: "Others", path: "/browse/others" },
+    { name: "Projects", path: "/browse/projects" },
+    { name: "Notes", path: "/browse/notes" },
   ];
 
   useEffect(() => {
@@ -44,7 +42,7 @@ const NavBar = () => {
         setUserName(parsedUser.name || "User");
         setUserAvatar(parsedUser.avatar || "");
       } catch (error) {
-        console.error("Invalid user data in localStorage");
+        console.error("Invalid user data in localStorage", error);
       }
     }
   }, []);
@@ -127,7 +125,7 @@ const NavBar = () => {
   }
 
   return (
-    <div className="w-full sticky top-0 z-50 bg-white backdrop-blur-xl border-b border-neutral-200/60 shadow-sm transition-all duration-300">
+    <div className="w-full sticky top-0 z-50 bg-white transition-all duration-300">
       {/* Main Navbar */}
       <div className="px-6 md:px-20 py-4 flex justify-between items-center">
         {/* Left Logo + Menu */}
@@ -138,28 +136,49 @@ const NavBar = () => {
           >
             <img src={logo} className="h-[40px] max-lg:h-[35px] w-auto" alt="SwapnSave Logo - Campus Marketplace" />
           </Link>
+        </div>
+        {/* Desktop Menu */}
+        <div className="hidden md:flex flex-1 ml-6 items-center border-l border-neutral-200 pl-6 gap-1">
+          {menu.map((item) => {
+            const path = item === "Home" ? "/" : `/${item.toLowerCase()}`;
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex gap-1 border-l border-neutral-200 pl-6 ml-2">
-            {menu.map((item) => {
-              const path =
-                item === "Home"
-                  ? "/"
-                  : item === "Sell Project"
-                    ? "/sell-project"
-                    : `/${item.toLowerCase()}`;
-
+            if (item === "Browse") {
               return (
-                <Link
-                  key={item}
-                  to={path}
-                  className="px-3 py-1.5 font-bold rounded-full text-neutral-500 text-sm hover:text-neutral-900 hover:bg-neutral-100/80 transition-colors"
-                >
-                  {item}
-                </Link>
+                <div key={item} className="relative group">
+                  <Link
+                    to={path}
+                    className="flex items-center gap-1 px-4 py-2  rounded-full text-neutral-500 text-sm hover:text-neutral-900 hover:bg-neutral-100/80 transition-colors"
+                  >
+                    {item} <IoIosArrowDown className="text-xs group-hover:rotate-180 transition-transform duration-300" />
+                  </Link>
+                  {/* Hover Dropdown */}
+                  <div className="absolute top-full left-0 pt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                    <div className="bg-white border border-neutral-100 rounded-2xl shadow-xl overflow-hidden py-2">
+                      {browseCategories.map((cat) => (
+                        <Link
+                          key={cat.name}
+                          to={cat.path}
+                          className="block px-5 py-2.5 text-sm font-semibold text-neutral-600 hover:text-blue-600 hover:bg-blue-50/50 transition-colors"
+                        >
+                          {cat.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               );
-            })}
-          </div>
+            }
+
+            return (
+              <Link
+                key={item}
+                to={path}
+                className="px-4 py-2  rounded-full text-neutral-500 text-sm hover:text-neutral-900 hover:bg-neutral-100/80 transition-colors"
+              >
+                {item}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Right Section */}
@@ -175,20 +194,20 @@ const NavBar = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setShowSearchDropdown(true)}
                 onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}
-                className="px-2 bg-transparent outline-none text-sm w-full font-medium text-neutral-800 placeholder:text-neutral-400"
+                className="px-2 bg-transparent outline-none text-sm w-full  text-neutral-800 placeholder:text-neutral-400"
                 placeholder="Search products, projects, notes..."
               />
             </div>
-            
+
             {/* Desktop Search Dropdown */}
             {showSearchDropdown && searchQuery.trim().length > 1 && (
               <div className="absolute top-full mt-3 w-full bg-white border border-neutral-100 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.08)] max-h-[350px] overflow-y-auto z-50 py-2">
                 {isSearching ? (
-                  <div className="px-4 py-6 text-center text-sm font-medium text-neutral-500 animate-pulse">Searching...</div>
+                  <div className="px-4 py-6 text-center text-sm  text-neutral-500 animate-pulse">Searching...</div>
                 ) : searchResults.length > 0 ? (
                   searchResults.map(product => (
-                    <div 
-                      key={product._id} 
+                    <div
+                      key={product._id}
                       onMouseDown={() => navigate({ to: `/browse/product/${product._id}` })}
                       className="px-4 py-3 hover:bg-neutral-50 cursor-pointer flex gap-4 items-center border-b border-neutral-50 last:border-0 transition-colors"
                     >
@@ -216,7 +235,7 @@ const NavBar = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => loginWithGoogle()}
-                className="group flex items-center gap-2 bg-neutral-900 border border-neutral-800 text-white px-5 py-2.5 rounded-full text-sm font-bold hover:bg-black hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                className="group flex items-center gap-2 bg-neutral-900 border border-neutral-800 text-white px-5 py-2.5 rounded-full text-sm  hover:bg-black hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
               >
                 {/* Google logo */}
                 <svg
@@ -362,116 +381,34 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Bar (Scrollable Links) */}
-      <div className="w-full scrollbar-hide overflow-x-auto border-b border-neutral-100 bg-white/50 backdrop-blur-md md:hidden flex flex-col">
-        <div className="flex gap-3 px-6 pt-2 text-xs font-semibold text-neutral-500 whitespace-nowrap">
-          {menu.map((item) => {
-            const path =
-              item === "Home"
-                ? "/"
-                : item === "Sell Project"
-                  ? "/sell-project"
-                  : `/${item.toLowerCase()}`;
 
-            const isActive = currentPath === path;
 
-            return (
-              <Link
-                key={item}
-                to={path}
-                className={`transition pb-3 px-2 relative ${isActive
-                  ? "text-blue-600"
-                  : "hover:text-black"
-                  }`}
-              >
-                {item}
-                {isActive && (
-                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-600 rounded-t-full"></div>
-                )}
-              </Link>
-            );
-          })}
-        </div>
-      </div>
 
-      {/* Mobile Search Bar */}
-      <div className="md:hidden w-full px-6 py-3 border-b border-neutral-100 bg-white/50 backdrop-blur-md relative z-40">
-        <div className="relative w-full">
-          <div className="w-full bg-neutral-100/70 border border-neutral-200 flex items-center px-4 py-2.5 rounded-full focus-within:bg-white focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100/50 transition-all">
-            <span className="text-neutral-400">
-              <CiSearch size={20} />
-            </span>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={() => setShowSearchDropdown(true)}
-              onBlur={() => setTimeout(() => setShowSearchDropdown(false), 200)}
-              className="px-2 bg-transparent outline-none text-sm w-full font-medium text-neutral-800 placeholder:text-neutral-400"
-              placeholder="Search products, projects, notes..."
-            />
-          </div>
-          
-          {/* Mobile Search Dropdown */}
-          {showSearchDropdown && searchQuery.trim().length > 1 && (
-            <div className="absolute top-full mt-2 left-0 right-0 w-full bg-white border border-neutral-100 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] max-h-[300px] overflow-y-auto z-50 py-2">
-              {isSearching ? (
-                <div className="px-4 py-4 text-center text-sm font-medium text-neutral-500 animate-pulse">Searching...</div>
-              ) : searchResults.length > 0 ? (
-                searchResults.map(product => (
-                  <div 
-                    key={product._id} 
-                    onMouseDown={() => navigate({ to: `/browse/product/${product._id}` })}
-                    className="px-4 py-3 hover:bg-neutral-50 cursor-pointer flex gap-4 items-center border-b border-neutral-50 last:border-0 transition-colors"
-                  >
-                    <img src={product.image} className="w-10 h-10 rounded-xl object-cover shadow-sm bg-neutral-100 flex-shrink-0" alt="" />
-                    <div className="flex flex-col flex-1 overflow-hidden">
-                      <span className="text-sm font-bold text-neutral-800 truncate mb-0.5">{product.name}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-extrabold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-md uppercase">₹{product.price}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="px-4 py-4 text-center flex flex-col justify-center items-center">
-                  <span className="text-sm font-medium text-neutral-500">No results found</span>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
 
-      {/* Desktop Category Bar */}
-      <div className="hidden md:block w-full scrollbar-hide overflow-x-auto border-b border-neutral-100 bg-white/50 backdrop-blur-md">
-        <div className="flex gap-3 px-6 md:px-20 text-xs font-semibold text-neutral-500 whitespace-nowrap">
-          {categories.map((cat) => {
-            const isActive =
-              currentPath === cat.path;
-
-            return (
-              <Link
-                key={cat.name}
-                to={cat.path}
-                className={`transition py-3 px-3 relative ${isActive
-                  ? "text-blue-600"
-                  : "hover:text-black"
-                  }`}
-              >
-                {cat.name}
-                {isActive && (
-                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-600 rounded-t-full"></div>
-                )}
-              </Link>
-            );
-          })}
-        </div>
-      </div>
 
       {/* Mobile Dropdown */}
       {menuOpen && (
         <div className="absolute top-[75px] right-4 rounded-2xl w-64 bg-white/95 backdrop-blur-xl border border-neutral-200/60 shadow-2xl p-5 md:hidden z-50">
+          
+          {/* Menu Items */}
+          <div className="flex flex-col gap-2 mb-4 pb-4 border-b border-neutral-100">
+            {menu.map((item) => {
+              const path = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+              const isActive = currentPath === path || (item === "Browse" && currentPath.startsWith("/browse"));
+
+              return (
+                <Link
+                  key={item}
+                  to={path}
+                  onClick={() => setMenuOpen(false)}
+                  className={`font-semibold text-sm py-2 px-3 rounded-lg transition-colors ${isActive ? "bg-blue-50 text-blue-600" : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"}`}
+                >
+                  {item}
+                </Link>
+              );
+            })}
+          </div>
+
           {!isAuthenticated ? (
             <div className="flex flex-col gap-2">
               <button
