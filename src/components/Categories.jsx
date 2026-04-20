@@ -9,7 +9,7 @@ const Categories = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[220px] lg:auto-rows-[320px]">
 
           {/* ----- 1: BOOKS (Tall Purple) Maps to Customization ----- */}
-          <Link to="/books" className="group relative bg-[#b29de2] rounded-[48px] max-lg:rounded-[20px] p-8 lg:col-span-1 lg:row-span-2 overflow-hidden flex flex-col hover:scale-[1.01] transition-transform duration-300 shadow-sm hover:shadow-xl">
+          <Link to="/books" className="group relative bg-[#ffffff] border border-neutral-200 rounded-[48px] max-lg:rounded-[20px] p-8 lg:col-span-1 lg:row-span-2 overflow-hidden flex flex-col hover:scale-[1.01] transition-transform duration-300 shadow-sm hover:shadow-xl">
             <h3 className="text-[2.25rem] font-serif font-semibold text-indigo-950 mb-3 tracking-tight leading-none">Academic Books</h3>
             <p className="text-indigo-950/80 text-sm font-medium leading-snug w-3/4">
               Buy & sell second-hand academic textbooks on campus.
@@ -51,7 +51,7 @@ const Categories = () => {
           </Link>
 
           {/* ----- 2: GADGETS (Wide Pink) Maps to Scheduling ----- */}
-          <Link to="/gadgets" className="group max-lg:rounded-[20px]  relative bg-[#f478a8] rounded-[48px] p-8 lg:col-span-2 lg:row-span-1 overflow-hidden flex flex-col md:flex-row hover:scale-[1.01] transition-transform duration-300 shadow-sm hover:shadow-xl">
+          <Link to="/gadgets" className="group max-lg:rounded-[20px]  relative bg-[#ffffff] border border-neutral-200 rounded-[48px] p-8 lg:col-span-2 lg:row-span-1 overflow-hidden flex flex-col md:flex-row hover:scale-[1.01] transition-transform duration-300 shadow-sm hover:shadow-xl">
             <div className="relative z-20 w-full md:w-5/12 flex flex-col justify-start pt-4">
               <h3 className="text-[2.25rem] font-serif font-semibold text-[#831843] mb-3 tracking-tight leading-none">Gadgets</h3>
               <p className="text-[#831843]/80 text-sm font-medium leading-snug w-11/12">
@@ -103,7 +103,7 @@ const Categories = () => {
           </Link>
 
           {/* ----- 3: PROJECTS (Square Green) Maps to Wallet ----- */}
-          <Link to="/projects" className="group max-lg:rounded-[20px]  relative bg-[#bcdb8a] rounded-[48px] p-8 lg:col-span-1 lg:row-span-1 overflow-hidden flex flex-col justify-end hover:scale-[1.01] transition-transform duration-300 shadow-sm hover:shadow-xl">
+          <Link to="/projects" className="group max-lg:rounded-[20px]  relative bg-[#ffffff] border border-neutral-200 rounded-[48px] p-8 lg:col-span-1 lg:row-span-1 overflow-hidden flex flex-col justify-end hover:scale-[1.01] transition-transform duration-300 shadow-sm hover:shadow-xl">
 
             {/* floating wallet card top (like Givingli Cash card in image) */}
             <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[85%] z-10 h-32 pointer-events-none block max-md:scale-[0.65] max-md:origin-top max-md:-top-0 md:top-10">
@@ -138,7 +138,7 @@ const Categories = () => {
           </Link>
 
           {/* ----- 4: NOTES (Square Yellow) Maps to Inbox ----- */}
-          <Link to="/notes" className="group max-lg:rounded-[20px]  relative bg-[#fce473] rounded-[48px] p-8 lg:col-span-1 lg:row-span-1 overflow-hidden flex flex-col hover:scale-[1.01] transition-transform duration-300 shadow-sm hover:shadow-xl">
+          <Link to="/notes" className="group max-lg:rounded-[20px]  relative bg-[#ffffff] border border-neutral-200 rounded-[48px] p-8 lg:col-span-1 lg:row-span-1 overflow-hidden flex flex-col hover:scale-[1.01] transition-transform duration-300 shadow-sm hover:shadow-xl">
             <div className="relative z-20 pt-2">
               <h3 className="text-[2.25rem] font-serif font-semibold text-yellow-950 mb-2 tracking-tight leading-none">Notes</h3>
               <p className="text-yellow-950/80 text-sm font-medium leading-snug w-5/6">
